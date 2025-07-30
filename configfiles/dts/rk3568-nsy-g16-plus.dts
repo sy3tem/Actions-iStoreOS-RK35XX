@@ -782,7 +782,7 @@
 	//snps,reset-delays-us = <0 20000 100000>;
 	assigned-clocks = <&cru SCLK_GMAC1_RX_TX>;
 	assigned-clock-parents = <&gmac1_xpcsclk>;
-	clock_in_out = "output";
+	clock_in_out = "input";
 	pinctrl-names = "default";
 	pinctrl-0 = <&gmac1m1_miim>;
 	power-domains = <&power RK3568_PD_PIPE>;
@@ -1051,22 +1051,4 @@
 &saradc {
 	status = "okay";
 	vref-supply = <&vcc1v8_adc>;
-};
-
-&gpu {
-	status = "okay";
-};
-
-&bus_npu {
-	status = "okay";
-};
-
-&rknpu {
-	rknpu-supply = <&vdd_npu>;
-	mem-supply = <&vdd_npu>;
-	status = "okay";
-};
-
-&rknpu_mmu {
-	status = "okay";
 };

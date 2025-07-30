@@ -61,6 +61,9 @@ endef
 TARGET_DEVICES += bdy_g18-pro" >> target/linux/rockchip/image/legacy.mk
 
 
+rm -f target/linux/generic/hack-6.6/744-rtl8366_smi-fix-ce-debugfs.patch
+
+
 rm -f target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 cp -f $GITHUB_WORKSPACE/configfiles/02_network target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
