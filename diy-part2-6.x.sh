@@ -75,9 +75,9 @@ mkdir -p package/base-files/files/lib/firmware/mediatek
 cp -f $GITHUB_WORKSPACE/configfiles/WirelessDriver/mt7916_eeprom.bin package/base-files/files/lib/firmware/mediatek/mt7916_eeprom.bin
 
 
-# rtl8367b驱动压缩包，暂时使用这样替换
-wget https://github.com/xiaomeng9597/files/releases/download/files/rtl8367b-fix-gmac.tar.gz
-tar -xvf rtl8367b-fix-gmac.tar.gz
+# rtl8367b驱动资源包，暂时使用这样替换
+wget https://github.com/xiaomeng9597/files/releases/download/files/rtl8367b.tar.gz
+tar -xvf rtl8367b.tar.gz
 
 
 # 复制dts设备树文件到指定目录下
