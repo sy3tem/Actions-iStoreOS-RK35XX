@@ -769,7 +769,7 @@
 };
 
 &xpcs {
-	status = "okay";
+	status = "disabled";
 };
 
 &gmac1 {
