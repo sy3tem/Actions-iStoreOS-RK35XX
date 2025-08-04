@@ -65,7 +65,7 @@ rm -f target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 cp -f $GITHUB_WORKSPACE/configfiles/02_network target/linux/rockchip/armv8/base-files/etc/board.d/02_network
 
 
-# 加入nsy_g68-plus初始化网络配置脚本
+# 加入初始化交换机脚本
 cp -f $GITHUB_WORKSPACE/configfiles/swconfig_install package/base-files/files/etc/init.d/swconfig_install
 chmod 755 package/base-files/files/etc/init.d/swconfig_install
 
