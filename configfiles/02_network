@@ -18,6 +18,7 @@ rockchip_setup_interfaces()
 	friendlyarm,nanopi-r4se|\
 	friendlyarm,nanopi-r4s-enterprise|\
 	friendlyarm,nanopi-r6c|\
+	friendlyarm,nanopi-r76s|\
 	hinlink,opc-h66k|\
 	hinlink,h88k-v2|\
 	hinlink,h88k|\
@@ -67,6 +68,10 @@ rockchip_setup_interfaces()
 		;;
 	sinovoip,rk3568-bpi-r2pro)
 		ucidef_set_interfaces_lan_wan 'lan0 lan1 lan2 lan3' 'eth0'
+		;;
+	radxa,e24c)
+		ucidef_add_switch "switch0" \
+			"0:wan" "1:lan" "2:lan" "3:lan" "6t@eth0"
 		;;
 	radxa,e54c)
 		ucidef_add_switch "switch0" \
