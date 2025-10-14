@@ -1,0 +1,177 @@
+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+/*
+ * Copyright (c) 2022 Rockchip Electronics Co., Ltd.
+ *
+ */
+
+/dts-v1/;
+#include <rockchip/rk3528.dtsi>
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+#include <dt-bindings/pinctrl/rockchip.h>
+#include "rk3528-patch.dtsi"
+#include "rk3528-ip.dtsi"
+/ {
+	model = "Hugsun RT28 AX3000 Router";
+	compatible = "hugsun,rt28", "rockchip,rk3528";
+
+	wireless_wlan: wireless-wlan {
+		compatible = "wlan-platdata";
+		rockchip,grf = <&grf>;
+		wifi_chip_type = "";
+		pinctrl-names = "default";
+		pinctrl-0 = <&peic_vcc_en >;
+		//WIFI,host_wake_irq = <&gpio1 RK_PA7 GPIO_ACTIVE_HIGH>;
+		WIFI,reset_gpio = <&gpio1 RK_PA2  GPIO_ACTIVE_HIGH>;
+		status = "okay";
+	};
+
+	gpio_keys: gpio-keys {
+		compatible = "gpio-keys";
+		autorepeat;
+
+		wps_button {
+			debounce-interval = <100>;
+			gpios = <&gpio4 RK_PB6 GPIO_ACTIVE_LOW>;
+			label = "GPIO wps";
+			linux,code = <KEY_WPS_BUTTON>;
+			wakeup-source;
+		};
+	};
+
+	leds: gpio-leds {
+		compatible = "gpio-leds";
+		status = "okay";
+
+		work_led_red: work_red {
+			gpios = <&gpio4 RK_PA2 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "off";
+		};
+
+		work_led_green: work_green {
+			gpios = <&gpio4 RK_PA1 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "on";
+		};
+
+		work_led_blue: work_blue {
+			gpios = <&gpio4 RK_PA0 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "on";
+		};				
+
+		link_led_red: link_red {
+			gpios = <&gpio4 RK_PA5 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "on";
+		};
+
+		link_led_green: link_green {
+			gpios = <&gpio4 RK_PA4 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "on";
+		};
+
+		link_led_blue: link_blue {
+			gpios = <&gpio4 RK_PA3 GPIO_ACTIVE_HIGH>;
+			linux,default-trigger = "none";
+			default-state = "on";
+		};				
+	};
+		
+	rtl8367b {
+		compatible = "realtek,rtl8367b";
+		realtek,extif = <7 1 0 1 1 1 1 1 1 2>;
+		mii-bus = <&mdio1>;
+		phy-id = <29>;
+	};			
+};
+
+&combphy_pu{
+	status = "okay";
+};
+
+&sdio0 {
+	status = "disabled";
+};
+
+&sdmmc {
+	status = "disabled";
+};
+
+&pcie2x1{
+	//reset-gpios = <&gpio1 RK_PA2 GPIO_ACTIVE_LOW>;
+	//pinctrl-names = "default";
+	//pinctrl-0 = <&pciem1_pins>;
+	status = "okay";
+};
+
+&usbdrd_dwc3 { 
+	phys = <&u2phy_otg>;
+	phy-names = "usb2-phy";
+	maximum-speed = "high-speed";
+	snps,dis_u2_susphy_quirk;
+	snps,usb2-lpm-disable;
+};
+
+&gmac0 {
+        status = "disabled";
+};
+
+&gmac1 {
+       /* Use rgmii-rxid mode to disable rx delay inside Soc */
+       phy-mode = "rgmii-rxid";
+       clock_in_out = "output";
+
+       snps,reset-gpio = <&gpio4 RK_PB5 GPIO_ACTIVE_LOW>;
+       snps,reset-active-low;
+       /* Reset time is 20ms, 100ms for rtl8211f */
+       snps,reset-delays-us = <0 20000 100000>;
+
+       tx_delay = <0x30>;
+       /* rx_delay = <0x3f>; */
+
+       pinctrl-names = "default";
+       pinctrl-0 = <&rgmii_miim
+                    &rgmii_tx_bus2
+                    &rgmii_rx_bus2
+                    &rgmii_rgmii_clk
+                    &rgmii_rgmii_bus>;
+
+       phy-handle = <&rgmii_phy>;
+
+       status = "okay";
+
+       fixed-link {
+			speed = <1000>;
+			full-duplex;
+       };	   
+};
+
+&mdio1 {
+       rgmii_phy: phy@1 {
+               compatible = "ethernet-phy-ieee802.3-c22";
+               reg = <0x1>;
+       };
+};
+
+&pinctrl {
+	wireless-wlan {
+		wifi_host_wake_irq: wifi-host-wake-irq {
+			rockchip,pins = <1 RK_PA7 RK_FUNC_GPIO &pcfg_pull_down>;
+		};
+
+		wifi_enable_h: wifi-enable-h {
+			rockchip,pins = <1 RK_PA6 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};
+
+	peic {
+		peic_vcc_en: peic-vcc-en{
+			rockchip,pins = <1 RK_PA2 RK_FUNC_GPIO &pcfg_pull_none>;
+		};
+	};	
+
+};
+
